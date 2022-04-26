@@ -7,15 +7,6 @@ import { Server } from "http";
 
 import { addLogger } from "./util/logger";
 
-/* --оставллено на будущее lusca про безопасность, compression про сжатие, path про пути, bluebird про удобные промисы,body-parser про обработку тела запроса в разных форматах.
-
-import lusca from "lusca";
-import path from "path";
-import compression from "compression";
-import bluebird from "bluebird";
-import bodyParser from "body-parser";
-*/
-
 //Create logger
 const logger = addLogger("app");
 
