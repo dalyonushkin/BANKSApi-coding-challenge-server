@@ -1,0 +1,40 @@
+{
+    "1a": {
+        "amount": 50,
+        "date": "2022-01-22",
+        "iban": "DE12500105170648489890",
+        "accountHolder": "John Doe (backend)",
+        "note": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    },
+    "1b": {
+        "amount": 500,
+        "date": "2022-01-02",
+        "iban": "DE12500105170648489890",
+        "accountHolder": "Jim Doe (backend)"
+    },
+    "1c": {
+        "amount": 99,
+        "date": "2021-08-03",
+        "iban": "DE12500105170648489890",
+        "accountHolder": "Lucy Doe (backend)",
+        "note": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+    },
+    "3a": {
+        "amount": 180500,
+        "date": "2020-12-15",
+        "iban": "DE12500105170648489890",
+        "accountHolder": "George Doe (backend)",
+        "note": "Contrary to popular belief, Lorem Ipsum is not simply random text."
+    },
+    "2a": {
+        "amount": 150,
+        "date": "2019-05-26",
+        "iban": "DE12500105170648489890"
+    },
+    "15a": {
+        "amount": 200,
+        "date": "2022-04-21",
+        "iban": "DE12500105170648489890",
+        "note": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    }
+}
