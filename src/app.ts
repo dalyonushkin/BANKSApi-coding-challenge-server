@@ -4,6 +4,9 @@ import errorHandler from "errorhandler";
 import express from "express";
 
 import { Server } from "http";
+import { TransferAlreadyExistsInStoreError, TransferRecordIsNotValidError } from "./errorsDefinitions";
+import { readFileStore, store$addTransfer, store$deleteTransfer, store$updateTransfer } from "./fileStore";
+import { validateTransferRecord, validateTransferRecordId } from "./model";
 
 import { addLogger } from "./util/logger";
 
@@ -16,7 +19,6 @@ export const app = express();
 // Express configuration
 app.set("port", process.env.PORT || 3003);
 
-const fileStorePath = "./filestore/transfers.json";
 /**
  * Error Handler. Provides full stack - remove for production
  */
@@ -27,56 +29,127 @@ app.use(bodyParser.json());
 app.post("/test", (req, response, next) => {
   logger.debug("return body:");
   logger.debug(req.body);
-  response.status(200).json(req.body);
+  response.status(200).json({});
 });
 
 /**
  * Add transfer record route
- * Response statuses: 201, 400, 500
+ * Response statuses: 
+ * 201 - created, 
+ * 400 - not valid data
+ * 409 - record exists
+ * 500 - other errors
  */
 app.post("/transfers", (req, response, next) => {
-  logger.debug("return body:");
-  logger.debug(req.body);
-  response.status(201).json(req.body);
+  try {
+    const transferRecordId = req.body.transferId;
+    const transferRecord = req.body.transfer;
+    if (!transferRecordId) {
+      response.status(400).json("transferId is required");
+    }
+    else if (!transferRecord) {
+      response.status(400).json("transferRecord is required");
+    }
+    else {
+      validateTransferRecord(transferRecord, transferRecordId);
+      store$addTransfer(app.get("fileStorePath"), transferRecordId, transferRecord);
+      response.status(201).json({});
+    }
+  } catch (error) {
+    if (error instanceof TransferRecordIsNotValidError) {
+      response.status(400).json(`${error.message}, details: ${JSON.stringify(error.fields)}`);
+    }
+    if (error instanceof TransferAlreadyExistsInStoreError) {
+      response.status(409).json(`${error.message}`);
+    }
+    else response.status(500).json(error.message);
+  }
 });
 
 /**
  * Get all transfer records route
- * Response statuses: 200, 500
+ * Response statuses: 
+ * 200 - get all records 
+ * 500 - other errors
  */
 app.get("/transfers", (req, response, next) => {
-  logger.debug("return body:");
-  logger.debug(req.body);
-  response.status(200).json(req.body);
+  try {
+    const transfers = readFileStore(app.get("fileStorePath"));
+    response.status(200).json(transfers);
+  } catch (error) {
+    response.status(500).json(error.message);
+  }
 });
 
 /**
  * Delete transfer record route
  * Response statuses: 200, 400, 500
+ * Response statuses: 
+ * 200 - record deleted, 
+ * 400 - not valid data
+ * 500 - other errors
  */
 app.delete("/transfers", (req, response, next) => {
-  logger.debug("return body:");
-  logger.debug(req.body);
-  response.status(200).json(req.body);
+  try {
+    const transferRecordId = req.body.transferId;
+    if (!transferRecordId) {
+      response.status(400).json("transferId is required");
+    }
+    else {
+      validateTransferRecordId(transferRecordId);
+      store$deleteTransfer(app.get("fileStorePath"), transferRecordId);
+      response.status(200).json({});
+    }
+  } catch (error) {
+    if (error instanceof TransferRecordIsNotValidError) {
+      response.status(400).json(`${error.message}, details: ${JSON.stringify(error.fields)}`);
+    }
+    else response.status(500).json(error.message);
+  }
 });
 
 /**
  * Update transfer record route
  * Response statuses: 200, 400, 404, 500
+ * Response statuses: 
+ * 200 - record updated, 
+ * 400 - not valid data
+ * 500 - other errors
  */
 app.put("/transfers", (req, response, next) => {
-  logger.debug("return body:");
-  logger.debug(req.body);
-  response.status(200).json(req.body);
+  try {
+    const transferRecordId = req.body.transferId;
+    const transferRecord = req.body.transfer;
+    if (!transferRecordId) {
+      response.status(400).json("transferId is required");
+    }
+    else if (!transferRecord) {
+      response.status(400).json("transferRecord is required");
+    }
+    else {
+      validateTransferRecord(transferRecord, transferRecordId);
+      store$updateTransfer(app.get("fileStorePath"), transferRecordId, transferRecord);
+      response.status(200).json({});
+    }
+  } catch (error) {
+    if (error instanceof TransferRecordIsNotValidError) {
+      response.status(400).json(`${error.message}, details: ${JSON.stringify(error.fields)}`);
+    }
+    if (error instanceof TransferAlreadyExistsInStoreError) {
+      response.status(409).json(`${error.message}`);
+    }
+    else response.status(500).json(error.message);
+  }
 });
 
-export const startAppServer = (): { server: Server } => {
+export const startAppServer = (fileStorePath?: string): { server: Server } => {
   /**
    * Start Express server.
    */
 
 
   const server = app.listen(app.get("port"), () => {
+    app.set("fileStorePath", fileStorePath || process.env.FILE_STORE_PATH || "./filestore/transfers.json");
     console.log(
       "  App is running at http://localhost:%d in %s mode",
       app.get("port"),
