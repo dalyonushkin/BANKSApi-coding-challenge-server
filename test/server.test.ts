@@ -17,8 +17,8 @@ afterAll((done) => {
 
 describe("when call /test", () => {
   it("return responce in body", () => {
-    return request(server).post("/test").send({name: 'john'}).set('Accept', 'application/json')
-      .expect('Content-Type', /json/).expect({name: 'john'})
+    return request(server).post("/test").send({name: "john"}).set("Accept", "application/json")
+      .expect("Content-Type", /json/).expect({name: "john"})
       .expect(200);
 
   });
