@@ -33,19 +33,33 @@ export function deleteTransfer(transfers: TransfersList, id: string): TransfersL
     return updatedTransfers;
 }
 
+export function validateTransferRecordId(transferId: any) {
+    const invalidFields: string[] = [];
+    if (!transferId || !isValidString(transferId)) invalidFields.push("id");
+    if (invalidFields.length > 0) throw new TransferRecordIsNotValidError(invalidFields);
+}
+
 //validation should work with any types
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function validateTransferRecord(record: any,transferId?: any) {
-    const invalidFields: string[]=[];
+export function validateTransferRecord(record: any, transferId?: any) {
+    const invalidFields: string[] = [];
     if (typeof record !== "object") throw new TransferRecordIsNotValidError();
     if (record.accountHolder && !isValidString(record.accountHolder)) invalidFields.push("accountHolder");
     if (record.note && !isValidString(record.note)) invalidFields.push("note");
-    if (!record.iban||(record.iban && !isValidString(record.iban))) invalidFields.push("iban");
-    if (!record.amount||(record.amount && !isValidNumber(record.amount))) invalidFields.push("amount");
-    if (!record.date||(record.date && !isValidDate(record.date))) invalidFields.push("date");
-    if (transferId && !isValidString(transferId))  invalidFields.push("id");
-    if (invalidFields.length>0) throw new TransferRecordIsNotValidError(invalidFields);
+    if (!record.iban || (record.iban && !isValidString(record.iban))) invalidFields.push("iban");
+    if (!record.amount || (record.amount && !isValidNumber(record.amount))) invalidFields.push("amount");
+    if (!record.date || (record.date && !isValidDate(record.date))) invalidFields.push("date");
+    if (transferId) {
+        try {
+            validateTransferRecordId(transferId);
+        } catch (error) {
+            invalidFields.push("id");
+        }
+    }
+    if (invalidFields.length > 0) throw new TransferRecordIsNotValidError(invalidFields);
 }
+
+
 
 //validation should work with any types
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
