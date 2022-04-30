@@ -1,3 +1,7 @@
+/**
+ * Model with validations
+ */
+
 import { TransferAlreadyExistsInStoreError, TransferNotFoundInStoreError, TransferRecordIsNotValidError } from "./errorsDefinitions";
 import { isValidDate, isValidNumber, isValidString } from "./util/utils";
 
@@ -58,7 +62,6 @@ export function validateTransferRecord(record: any, transferId?: any) {
     }
     if (invalidFields.length > 0) throw new TransferRecordIsNotValidError(invalidFields);
 }
-
 
 
 //validation should work with any types

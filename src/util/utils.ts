@@ -1,3 +1,9 @@
+/**
+ * Validation utils
+ * We have very simple requirements for data validation, we should enough this functions. 
+ * For complex app it is preferred to use something like  https://www.npmjs.com/package/joi or https://www.npmjs.com/package/express-validator
+ */
+
 export function isValidNumber(value: string | number) {
     if ((typeof value === "number") && !isNaN(value)) return true;
 

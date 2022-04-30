@@ -1,4 +1,8 @@
-//validation
+/**
+ * Errors definitions for data validation and DML operations 
+ */
+
+
 export class InternalStoreReadWriteError extends Error {
   constructor(message: string) {
     super(message);

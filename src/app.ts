@@ -1,3 +1,6 @@
+/**
+ * Express app and REST definitions
+ */
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import errorHandler from "errorhandler";
@@ -26,11 +29,6 @@ app.use(errorHandler());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.post("/test", (req, response, next) => {
-  logger.debug("return body:");
-  logger.debug(req.body);
-  response.status(200).json({});
-});
 
 /**
  * Add transfer record route

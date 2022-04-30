@@ -1,3 +1,6 @@
+/**
+ * Simple File storage for JSON object
+ */
 import { readFileSync, writeFileSync } from "fs";
 import { InternalStoreReadWriteError } from "./errorsDefinitions";
 import { addTransfer, deleteTransfer, Transfer, TransfersList, updateTransfer } from "./model";
@@ -11,6 +14,7 @@ export function readFileStore(fileStorePath: string): TransfersList {
     throw new InternalStoreReadWriteError(e.message);
   }
 }
+
 export function writeFileStore(fileStorePath: string, filecontent: TransfersList) {
   try {
     writeFileSync(fileStorePath, JSON.stringify(filecontent), {encoding:"utf8", flag:"w"});
