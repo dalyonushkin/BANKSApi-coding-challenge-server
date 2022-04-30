@@ -1,12 +1,12 @@
 {
-    "name": "express-typescript-starter",
+    "name": "banksapi-coding-challenge-server",
     "version": "0.1.0",
-    "description": "A starting point for Node.js express apps with TypeScript",
+    "description": "BANKSapi Coding Challenge \"Transfer App Server\"",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+        "url": "https://github.com/dalyonushkin/BANKSApi-coding-challenge-server"
     },
-    "author": "Bowden Kelly",
+    "author": "Denis Alenushkin",
     "license": "MIT",
     "scripts": {
         "start": "npm run serve",
