@@ -4,7 +4,10 @@
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import errorHandler from "errorhandler";
+import cors from "cors";
+
 import express from "express";
+
 
 import { Server } from "http";
 import { TransferAlreadyExistsInStoreError, TransferRecordIsNotValidError } from "./errorsDefinitions";
@@ -25,6 +28,8 @@ app.set("port", process.env.PORT || 3003);
 /**
  * Error Handler. Provides full stack - remove for production
  */
+
+app.use(cors());
 app.use(errorHandler());
 app.use(cookieParser());
 app.use(bodyParser.json());

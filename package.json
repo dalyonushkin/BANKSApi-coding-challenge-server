@@ -24,12 +24,14 @@
         "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
     },
     "dependencies": {
+        "@types/cors": "^2.8.12",
         "async": "3.1.0",
         "bcrypt-nodejs": "0.0.3",
         "bluebird": "3.5.5",
         "body-parser": "1.19.0",
         "compression": "1.7.4",
         "cookie-parser": "1.4.4",
+        "cors": "2.8.5",
         "dotenv": "8.1.0",
         "errorhandler": "1.5.1",
         "express": "4.17.1",
